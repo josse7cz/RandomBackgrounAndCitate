@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p>Nazdarek</p>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/main.js}"></script>
+    <title>Citát dne</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
 
+
+</head>
+
+<body onload="randombg()">
+<div id="random">
+    <blockquote><strong>Debugging</strong> /de·bugh·ing/ <em>verb</em><br/>The Classic Mystery Game where you are the detective, the victim, and the murderer.</blockquote>
+    <button class="center" onclick="randombg()">reload simulation</button>
+</div>
 </body>
 </html>
