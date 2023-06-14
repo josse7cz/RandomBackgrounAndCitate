@@ -1,25 +1,45 @@
 package com.example.randombackgrounandcitate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class DataReader {
-    public List<String> readAllLines(String resource) throws IOException {
-        //Soubory z resources se získávají pomocí classloaderu. Nejprve musíme získat aktuální classloader.
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        //Pomocí metody getResourceAsStream() získáme z classloaderu InpuStream, který čte z příslušného souboru.
-        //Následně InputStream převedeme na BufferedRead, který čte text v kódování UTF-8
-        try (InputStream inputStream = classLoader.getResourceAsStream(resource);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            //Metoda lines() vrací stream řádků ze souboru. Pomocí kolektoru převedeme Stream<String> na List<String>.
-            return reader
-                    .lines()
-                    .collect(Collectors.toList());
+
+    public List<String> readByJavaClassic(String filepath) throws IOException {
+
+
+        ArrayList<String> result = new ArrayList<>();
+
+        try (FileReader f = new FileReader(filepath)) {
+
+            StringBuffer sb = new StringBuffer();
+            while (f.ready()) {
+                char c = (char) f.read();
+                if (c == '\n') {
+                    result.add(sb.toString());
+                    sb = new StringBuffer();
+                } else {
+                    sb.append(c);
+                }
+            }
+            if (sb.length() > 0) {
+                result.add(sb.toString());
+            }
         }
+        return result;
+    }
+
+    public List<String> readByJava8(String fileName) throws IOException {
+        List<String> result;
+        try (Stream<String> lines = Files.lines(Paths.get(fileName))) {
+            result = lines.collect(Collectors.toList());
+        }
+        return result;
     }
 }

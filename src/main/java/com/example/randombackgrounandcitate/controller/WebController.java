@@ -13,29 +13,28 @@ import java.util.Random;
 @Controller
 public class WebController {
     private final Random random;
-    private DataReader dataReader;
+    final String FILE_NAME = "fileToCreate.txt";
+    private final DataReader dataReader = new DataReader();
 
     public WebController() {
         this.random = new Random();
     }
-//    @RequestMapping(value = "/index2")
-//    public String index() {
-//        return "index2";
-//    }
 
     @RequestMapping(value = "/index")
     public ModelAndView index() throws IOException {
-//        List<String> list=new ArrayList<String>();
-//        list= dataReader.readAllLines("/data/citaty.txt");
+        List<String> list = new ArrayList<String>();
+        list = dataReader.readByJava8("citaty.txt");
         ModelAndView result = new ModelAndView("index");
+        result.addObject("citate", list.get(random.nextInt(5)));
+        return result;
+    }
 
-        List<String> quoteItem = new ArrayList<String>();
-        quoteItem.add("\"Nejsmutnější žena je ta, která má v sobě něco z víly a něco z ženy.\" - Karel Čapek");
-        quoteItem.add("\"Když se člověk narodí, dostane pytlík štěstí. Největší to však je, když potká člověka, kterému může štěstí rozdávat.\" - Jan Werich");
-        quoteItem.add("\"Věřte v lásku, ale nezoufejte, když nepřijde. Láska přichází, když to nejméně čekáte.\" - Milan Kundera");
-        quoteItem.add("\"Člověk nemůže dostatečně zdůraznit, jakou významnou roli hrají knihy v jeho životě. Jsou nám průvodci, dozorci, přátelé.\" - Bohumil Hrabal");
-        quoteItem.add("\"Věřím, že život má smysl a že náš každodenní život má něco vznešeného a jedinečného.\" - Václav Havel");
-        result.addObject("citat", quoteItem.get(random.nextInt(5)));
+    @RequestMapping("/read")
+    public ModelAndView read() throws IOException {
+        List<String> list;
+        list = dataReader.readByJavaClassic("citaty.txt");
+        ModelAndView result = new ModelAndView("read");
+        result.addObject("reader", list.get(random.nextInt(5)));
         return result;
     }
 }
